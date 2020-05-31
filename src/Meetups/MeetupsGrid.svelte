@@ -11,6 +11,7 @@
       description={meetup.description}
       subtitle={meetup.subtitle}
       address={meetup.address}
+      email={meetup.email}
       imageUrl={meetup.imageUrl}
     />
   {/each}
