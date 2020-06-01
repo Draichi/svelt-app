@@ -31,7 +31,7 @@
     },
   ]
 
-  function addMeetup() {
+  const addMeetup = () => {
 	  const newMeetup = {
 		  id: Math.random().toString(),
 		  title,

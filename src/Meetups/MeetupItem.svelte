@@ -1,5 +1,5 @@
 <script>
-import Button from '../UI/Button.svelte';
+  import Button from '../UI/Button.svelte';
 
   export let title;
   export let subtitle;
