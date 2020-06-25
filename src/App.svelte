@@ -4,7 +4,6 @@
   import Header from "./UI/Header.svelte";
   import TextInput from "./UI/TextInput.svelte";
   import MeetupsGrid from "./Meetups/MeetupsGrid.svelte";
-  import Button from "./UI/Button.svelte";
   import meetps from "./Meetups/meetups-store.js";
 
   let editMode = null;
@@ -20,7 +19,7 @@
   const cancelEdit = () => {
     editMode = null;
     editedId = null;
-  }
+  };
 
   const showDetails = event => {
     idToShow = event.detail;
@@ -34,7 +33,7 @@
 
   const startEdit = event => {
     editMode = "edit";
-    editedId = event.detail
+    editedId = event.detail;
   };
 </script>
 
@@ -42,24 +41,19 @@
   main {
     margin-top: 5rem;
   }
-  .meetup-controls {
-    margin: 1rem;
-  }
 </style>
 
 <Header />
 <main>
   {#if page === 'overview'}
-    <div class="meetup-controls">
-      <Button on:click={() => (editMode = 'edit')}>New meetup</Button>
-    </div>
     {#if editMode === 'edit'}
       <EditMeetup id={editedId} on:save={saveMeetup} on:cancel={cancelEdit} />
     {/if}
     <MeetupsGrid
       meetups={$meetps}
       on:showdetails={showDetails}
-      on:edit={startEdit} />
+      on:edit={startEdit}
+      on:add={() => (editMode = 'edit')} />
   {:else}
     <MeetupDetail id={idToShow} on:close={closeDetails} />
   {/if}
