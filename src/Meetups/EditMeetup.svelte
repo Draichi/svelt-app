@@ -6,6 +6,8 @@
   import Button from "./../UI/Button.svelte";
   import TextInput from "./../UI/TextInput.svelte";
 
+  export let id = null;
+
   let title = "";
   let subtitle = "";
   let address = "";
@@ -30,6 +32,19 @@
     emailValid &&
     descriptionValid;
 
+  if (id) {
+    const unsubscribe = meetups.subscribe(items => {
+      const selectedMeetup = items.find(i => i.id === id);
+      title = selectedMeetup.title;
+      subtitle = selectedMeetup.subtitle;
+      address = selectedMeetup.address;
+      email = selectedMeetup.email;
+      imageUrl = selectedMeetup.imageUrl;
+      description = selectedMeetup.description;
+    });
+    unsubscribe();
+  }
+
   const submitForm = () => {
     const newMeetup = {
       title,
@@ -39,11 +54,20 @@
       email,
       address
     };
-    meetups.addMeetup(newMeetup);
+    if (id) {
+      meetups.updateMeetup(id, newMeetup);
+    } else {
+      meetups.addMeetup(newMeetup);
+    }
     dispatch("save");
   };
 
   const cancel = () => dispatch("cancel");
+
+  const deleteMeetup = () => {
+    meetups.deleteMeetup(id);
+    dispatch("save");
+  };
 </script>
 
 <style>
@@ -103,5 +127,8 @@
     <Button type="button" on:click={submitForm} disabled={!formIsValid}>
       Save
     </Button>
+    {#if id}
+      <Button type="button" on:click={deleteMeetup}>Delete</Button>
+    {/if}
   </div>
 </Modal>
