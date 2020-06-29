@@ -1,18 +1,22 @@
 <script>
-	import { createEventDispatcher } from 'svelte';
-	import Button from './../UI/Button.svelte';
-	import MeetupFilter from './MeetupFilter.svelte';
+  import { createEventDispatcher } from "svelte";
+  import Button from "./../UI/Button.svelte";
+  import { flip } from "svelte/animate";
+  import { scale } from "svelte/transition";
+  import MeetupFilter from "./MeetupFilter.svelte";
   import MeetupItem from "./MeetupItem.svelte";
 
-  const dispatch = createEventDispatcher()
+  const dispatch = createEventDispatcher();
   export let meetups;
   let favsOnly = false;
 
-  $: filteredMeetups = favsOnly ? meetups.filter(meetup => meetup.isFavorite) : meetups;
+  $: filteredMeetups = favsOnly
+    ? meetups.filter(meetup => meetup.isFavorite)
+    : meetups;
 
   const setFilter = event => {
     favsOnly = event.detail === 1;
-  }
+  };
 </script>
 
 <style>
@@ -40,12 +44,14 @@
 </style>
 
 <section id="meetup-controls">
-  <MeetupFilter on:select={setFilter}/>
+  <MeetupFilter on:select={setFilter} />
   <Button on:click={() => dispatch('add')}>New meetup</Button>
 </section>
 <section id="meetups">
-  {#each filteredMeetups as meetup}
-    <MeetupItem {...meetup} on:showdetails on:edit />
+  {#each filteredMeetups as meetup (meetup.id)}
+    <div animate:flip={{ duration: 300 }} transition:scale>
+      <MeetupItem {...meetup} on:showdetails on:edit />
+    </div>
   {/each}
 
 </section>
